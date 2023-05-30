@@ -1,3 +1,6 @@
+![SDK](https://shields.microej.com/endpoint?url=https://repository.microej.com/packages/badges/sdk_5.7.json)
+![ARCH](https://shields.microej.com/endpoint?url=https://repository.microej.com/packages/badges/arch_7.18.json)
+
 # Overview
 
 MicroEJ Core Engine Abstraction Layer implementation for FreeRTOS.
@@ -39,20 +42,21 @@ Here is a non exhaustive list of tested environments:
 - Compilers / Integrated Development Environments:
   - IAR Embedded Workbench 8.50.6
   - STM32CubeIDE version 1.3.0 (using GNU GCC toolchain)
-  - Espressif IoT Development Framework (``esp-idf``) v3.3.4 (using GNU GCC toolchain) 
+  - Espressif IoT Development Framework (``esp-idf``) v4.4.4 (using GNU GCC toolchain) 
 - FreeRTOS versions:
+  - FreeRTOS V10.4.3
   - FreeRTOS V10.2.0
   - FreeRTOS V8.2.0
 
 
 # MISRA Compliance
 
-This Abstraction Layer implementation is MISRA-compliant (MISRA C 2004) with the following observed deviations:
-| Deviation | Category |                                                 Justification                                                 |
-|:---------:|:--------:|:-------------------------------------------------------------------------------------------------------------:|
-| Rule 6.3  | Advisory |             A deviation from this rule is applied so as to use the bool type from `<stdbool.h>`.              |
-| Rule 11.3 | Advisory | A deviation from this rule is unavoidable as FreeRTOS's handles (timers, queues, tasks) are pointers to void. | 
-  
+This Abstraction Layer implementation is MISRA-compliant (MISRA C:2012) with some noted exception. 
+It has been verified with Cppcheck v2.10. Here is the list of deviations from MISRA standard:
+
+| Deviation  | Category | Justification                                                      |
+|:----------:|:--------:|:------------------------------------------------------------------ |
+|  Rule 8.4  | Required | The Cppcheck analysis is made only on this LL code                 |
 
 # Dependencies
 
@@ -69,6 +73,6 @@ None.
 
 ---
 
-_Copyright 2020-2021 MicroEJ Corp. All rights reserved._  
-_This library is provided in source code for use, modification and test, subject to license terms._  
-_Any modification of the source code will break MicroEJ Corp. warranties on the whole library._  
+_Copyright 2020-2023 MicroEJ Corp. All rights reserved._
+_Use of this source code is governed by a BSD-style license that can be found with this software._
+ 

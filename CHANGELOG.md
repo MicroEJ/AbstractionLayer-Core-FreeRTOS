@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2023-05-30
+
+### Changed
+
+- Change license terms to MicroEJ Corp. BSD-style license.
+
+### Removed
+
+- Remove MISRA C:2004 specific files.
+
+### Fixed
+
+- Make the CCO MISRA C:2012 compliant.
+
 ## [1.2.0] - 2021-05-26
 
 ### Added
@@ -25,6 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - LLMJVM FreeRTOS implementation.
 
 ---
-_Copyright 2020-2021 MicroEJ Corp. All rights reserved._  
-_This library is provided in source code for use, modification and test, subject to license terms._    
-_Any modification of the source code will break MicroEJ Corp. warranties on the whole library._ 
+_Copyright 2020-2023 MicroEJ Corp. All rights reserved._
+_Use of this source code is governed by a BSD-style license that can be found with this software._
+

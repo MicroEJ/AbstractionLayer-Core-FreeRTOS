@@ -1,16 +1,12 @@
-This Software is provided both as Executable Software (code compiled AND 
-delivered by MicroEJ Corp.) and Software Source Code. 
+﻿MicroEJ Corp. does not claim any right in the Specification of this file. For the purpose
+of this paragraph, Specification means the methods' names and the structure, sequence and 
+organization of the API.
+You are free to use this Specification to make any clean room implementations or
+derivative work as long as you don't claim that Your work is compliant with this Specification. 
+Compliance tests may be available from MicroEJ Corp.
+If the data contained in the file is only composed of a Specification, then the following 
+license doesn't apply.
 
-If YOU are a MicroEJ SDK licensee, YOU can choose between the following 
-open-source license and Your MicroEJ SDK LICENSE (MicroEJ SDK EULA) : 
-
-The Executable Software can be, at your option, subject to MicroEJ SDK EULA.
-
-The source code will always be subject to the following license.
-
-For the avoidance of doubt, any modification of the source code, or any
-addition to the Software will break the warranties and will exempt MicroEJ Corp. 
-from any obligation arising under any specific agreement .
 -----------------------------------------------------------------------------
 
 All rights reserved.
@@ -26,7 +22,7 @@ modification, are permitted provided that the following conditions are met:
   used to endorse or promote products derived from this software without 
   specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
+THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ''AS IS'' AND ANY
 EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND CONTRIBUTORS BE LIABLE FOR ANY
