@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2023-06-28
+
+### Fixed
+
+- Fix initialization of LLMJVM_FreeRTOS semaphore.
+
+### Added
+
+- Add Cppcheck analysis configuration files.
+
 ## [1.3.0] - 2023-05-30
 
 ### Changed
@@ -23,20 +33,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-  - Cleanup for initial publication.
+- Cleanup for initial publication.
 
 ## [1.1.0] - 2021-05-05
 
 ### Added
 
-  - MicroEJ time header.
-  - LLMJVM FreeRTOS MISRA-compliant implementation (MISRA C 2004).
+- MicroEJ time header.
+- LLMJVM FreeRTOS MISRA-compliant implementation (MISRA C 2004).
 
 ## [1.0.0] - 2020-07-22
 
 ### Added
 
-  - LLMJVM FreeRTOS implementation.
+- LLMJVM FreeRTOS implementation.
 
 ---
 _Copyright 2020-2023 MicroEJ Corp. All rights reserved._

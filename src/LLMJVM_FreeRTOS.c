@@ -9,7 +9,7 @@
  * @file
  * @brief LLMJVM implementation over FreeRTOS.
  * @author MicroEJ Developer Team
- * @version 1.3.0
+ * @version 1.4.0
  */
 
 /*
@@ -104,9 +104,6 @@ int32_t LLMJVM_IMPL_initialize(void) {
 		if (LLMJVM_FREERTOS_Semaphore == NULL) {
 			result = LLMJVM_ERROR;
 		} else {
-			/* Created semaphore is in an empty state meaning that
-                            it must first be given before it can be taken. */
-			xSemaphoreGive(LLMJVM_FREERTOS_Semaphore);
 			microej_time_init();
 		}
 	}
