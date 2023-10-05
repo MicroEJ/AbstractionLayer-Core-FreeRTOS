@@ -51,12 +51,13 @@ Here is a non exhaustive list of tested environments:
 
 # MISRA Compliance
 
-This Abstraction Layer implementation is MISRA-compliant (MISRA C:2012) with some noted exception. 
+This Abstraction Layer implementation is MISRA-compliant (MISRA C:2012) with some noted exception.
 It has been verified with Cppcheck v2.10. Here is the list of deviations from MISRA standard:
 
 | Deviation  | Category | Justification                                                      |
 |:----------:|:--------:|:------------------------------------------------------------------ |
 |  Rule 8.4  | Required | The Cppcheck analysis is made only on this LL code                 |
+|  Rule 5.5  | Required | Intentional usage of macros to define native functions.            |
 
 # Dependencies
 
