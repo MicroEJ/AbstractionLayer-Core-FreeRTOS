@@ -58,6 +58,7 @@ It has been verified with Cppcheck v2.10. Here is the list of deviations from MI
 |:----------:|:--------:|:------------------------------------------------------------------ |
 |  Rule 8.4  | Required | The Cppcheck analysis is made only on this LL code                 |
 |  Rule 5.5  | Required | Intentional usage of macros to define native functions.            |
+|  Rule 7.2  | Required | Error detected in FreeRTOS third library.                          |
 
 # Dependencies
 

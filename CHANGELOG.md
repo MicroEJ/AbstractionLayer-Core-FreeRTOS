@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2024-07-19
+
+### Fixed
+
+- MISRA C:2012 compliance of LLMJVM_FreeRTOS.c.
+
+### Added
+
+- Add traces with loglevel.
+
 ## [1.4.1] - 2023-10-05
 
 ### Fixed
@@ -55,6 +65,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LLMJVM FreeRTOS implementation.
 
 ---
-_Copyright 2020-2023 MicroEJ Corp. All rights reserved._
+_Copyright 2020-2024 MicroEJ Corp. All rights reserved._
 _Use of this source code is governed by a BSD-style license that can be found with this software._
 

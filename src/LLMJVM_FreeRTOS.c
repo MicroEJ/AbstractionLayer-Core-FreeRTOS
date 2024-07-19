@@ -9,7 +9,7 @@
  * @file
  * @brief LLMJVM implementation over FreeRTOS.
  * @author MicroEJ Developer Team
- * @version 1.4.1
+ * @version 1.4.2
  */
 
 /*
@@ -30,7 +30,6 @@
 
 #include "LLMJVM_impl.h"
 #include "microej_time.h"
-#include "microej.h"
 #include "sni.h"
 
 #ifdef __cplusplus
@@ -52,7 +51,7 @@
  * Shared variables
  */
 /* Absolute time in ms at which timer will be launched */
-// cppcheck-suppress misra-c2012-8.9 // Global variable used across native function calls.
+// cppcheck-suppress [misra-c2012-8.9]: Global variable used across native function calls.
 static int64_t LLMJVM_FREERTOS_next_wake_up_time = INT64_MAX;
 
 /* Set to true when the timer expires, set to true when the timer is started. */
@@ -95,7 +94,7 @@ static void wake_up_timer_callback(TimerHandle_t timer) {
 int32_t LLMJVM_IMPL_initialize(void) {
 	int32_t result = LLMJVM_OK;
 	/* Create a timer to schedule an alarm for the VM */
-	// cppcheck-suppress misra-c2012-11.6 // Cast for matching xTimerCreate function signature.
+	// cppcheck-suppress [misra-c2012-11.6]: Cast for matching xTimerCreate function signature.
 	LLMJVM_FREERTOS_wake_up_timer = xTimerCreate(NULL, (TickType_t)100, (UBaseType_t)pdFALSE, (void*) WAKE_UP_TIMER_ID, wake_up_timer_callback);
 
 	if (LLMJVM_FREERTOS_wake_up_timer == NULL) {
@@ -130,7 +129,7 @@ int32_t LLMJVM_IMPL_scheduleRequest(int64_t absoluteTime) {
 	portBASE_TYPE xTimerChangePeriodResult;
 	portBASE_TYPE xTimerStartResult;
 
-	currentTime = LLMJVM_IMPL_getCurrentTime(MICROEJ_TRUE);
+	currentTime = LLMJVM_IMPL_getCurrentTime(JTRUE);
 
 	relativeTime = absoluteTime - currentTime;
 	/* Determine relative time/tick */
@@ -143,7 +142,9 @@ int32_t LLMJVM_IMPL_scheduleRequest(int64_t absoluteTime) {
 		LLMJVM_FREERTOS_next_wake_up_time = INT64_MAX;
 
 		/* Stop current timer (no delay) */
-		xTimerStop(LLMJVM_FREERTOS_wake_up_timer, (TickType_t )0);
+		if(pdPASS != xTimerStop(LLMJVM_FREERTOS_wake_up_timer, (TickType_t )0)) {
+			LLMJVM_ERROR_TRACE("%s:%d xTimerStop error\n", __FUNCTION__,__LINE__);
+		}
 
 		/* Notify the VM now */
 		result = LLMJVM_schedule();
@@ -157,15 +158,17 @@ int32_t LLMJVM_IMPL_scheduleRequest(int64_t absoluteTime) {
 		LLMJVM_FREERTOS_next_wake_up_time = absoluteTime;
 
 		/* Stop current timer (no delay) */
-		xTimerStop(LLMJVM_FREERTOS_wake_up_timer, (TickType_t )0);
+		if(pdPASS != xTimerStop(LLMJVM_FREERTOS_wake_up_timer, (TickType_t )0)) {
+			LLMJVM_ERROR_TRACE("%s:%d xTimerStop error\n", __FUNCTION__,__LINE__);
+		}
+
 		LLMJVM_FREERTOS_timer_expired = false;
 
 		/* Schedule the new alarm */
 		xTimerChangePeriodResult = xTimerChangePeriod(LLMJVM_FREERTOS_wake_up_timer, (TickType_t)relativeTick, (TickType_t)0);
 		xTimerStartResult = xTimerStart(LLMJVM_FREERTOS_wake_up_timer, (TickType_t )0);
 
-		if ((xTimerChangePeriodResult != pdPASS)
-		|| (xTimerStartResult != pdPASS)) {
+		if ((xTimerChangePeriodResult != pdPASS) || (xTimerStartResult != pdPASS)) {
 			result = LLMJVM_ERROR;
 		}
 	} else {
@@ -179,8 +182,7 @@ int32_t LLMJVM_IMPL_scheduleRequest(int64_t absoluteTime) {
  * Suspends the VM task if the pending flag is not set
  */
 int32_t LLMJVM_IMPL_idleVM(void) {
-	portBASE_TYPE res = xSemaphoreTake(LLMJVM_FREERTOS_Semaphore,
-			portMAX_DELAY);
+	portBASE_TYPE res = xSemaphoreTake(LLMJVM_FREERTOS_Semaphore, portMAX_DELAY);
 
 	return (res == pdTRUE) ? (int32_t) LLMJVM_OK : (int32_t) LLMJVM_ERROR;
 }
@@ -193,11 +195,10 @@ int32_t LLMJVM_IMPL_wakeupVM(void) {
 
 	if (IS_INSIDE_INTERRUPT() == pdTRUE) {
 		portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
-		res = xSemaphoreGiveFromISR(LLMJVM_FREERTOS_Semaphore,
-				&xHigherPriorityTaskWoken);
+		res = xSemaphoreGiveFromISR(LLMJVM_FREERTOS_Semaphore, &xHigherPriorityTaskWoken);
 		if (xHigherPriorityTaskWoken != pdFALSE) {
 			/* Force a context switch here. */
-			YIELD_FROM_ISR(xHigherPriorityTaskWoken);
+			YIELD_FROM_ISR(xHigherPriorityTaskWoken); // cppcheck-suppress [misra-c2012-7.2]: From SDK
 		}
 	} else {
 		res = xSemaphoreGive(LLMJVM_FREERTOS_Semaphore);
@@ -230,7 +231,7 @@ void LLMJVM_IMPL_setApplicationTime(int64_t t) {
 /*
  * Gets the system or the application time in milliseconds
  */
-// cppcheck-suppress misra-c2012-8.7 // External API which is called also internally, cannot be made static.
+// cppcheck-suppress [misra-c2012-8.7]: External API which is called also internally, cannot be made static.
 int64_t LLMJVM_IMPL_getCurrentTime(uint8_t sys) {
 	return microej_time_get_current_time(sys);
 }
