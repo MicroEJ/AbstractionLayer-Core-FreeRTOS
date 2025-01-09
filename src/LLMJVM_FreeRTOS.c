@@ -1,7 +1,7 @@
 /*
  * C
  *
- * Copyright 2018-2023 MicroEJ Corp. All rights reserved.
+ * Copyright 2018-2025 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 
@@ -9,7 +9,7 @@
  * @file
  * @brief LLMJVM implementation over FreeRTOS.
  * @author MicroEJ Developer Team
- * @version 1.4.2
+ * @version 1.4.4
  */
 
 /*
@@ -33,7 +33,7 @@
 #include "sni.h"
 
 #ifdef __cplusplus
-    extern "C" {
+extern "C" {
 #endif
 
 /* Defines -------------------------------------------------------------------*/
@@ -43,7 +43,10 @@
  */
 
 /* ID for the FreeRTOS Timer */
-#define WAKE_UP_TIMER_ID	42
+#define WAKE_UP_TIMER_ID    42
+
+/* Specify that a variable is unused to avoid warning at build time */
+#define _unused(x) ((void)(x))
 
 /* Globals -------------------------------------------------------------------*/
 
@@ -72,11 +75,12 @@ static void wake_up_timer_callback(TimerHandle_t timer);
  * we create a wrapper around it and check the ID of the timer.
  */
 static void wake_up_timer_callback(TimerHandle_t timer) {
-	uint32_t id = (uint32_t) pvTimerGetTimerID(timer);
+	uint32_t id = (uint32_t)pvTimerGetTimerID(timer);
 	if (id == (uint32_t)WAKE_UP_TIMER_ID) {
 		LLMJVM_FREERTOS_timer_expired = true;
 		int32_t result = LLMJVM_schedule();
 		assert(LLMJVM_OK == result);
+		_unused(result);
 	}
 }
 
@@ -95,7 +99,8 @@ int32_t LLMJVM_IMPL_initialize(void) {
 	int32_t result = LLMJVM_OK;
 	/* Create a timer to schedule an alarm for the VM */
 	// cppcheck-suppress [misra-c2012-11.6]: Cast for matching xTimerCreate function signature.
-	LLMJVM_FREERTOS_wake_up_timer = xTimerCreate(NULL, (TickType_t)100, (UBaseType_t)pdFALSE, (void*) WAKE_UP_TIMER_ID, wake_up_timer_callback);
+	LLMJVM_FREERTOS_wake_up_timer = xTimerCreate(NULL, (TickType_t)100, (UBaseType_t)pdFALSE, (void *)WAKE_UP_TIMER_ID,
+	                                             wake_up_timer_callback);
 
 	if (LLMJVM_FREERTOS_wake_up_timer == NULL) {
 		result = LLMJVM_ERROR;
@@ -142,31 +147,32 @@ int32_t LLMJVM_IMPL_scheduleRequest(int64_t absoluteTime) {
 		LLMJVM_FREERTOS_next_wake_up_time = INT64_MAX;
 
 		/* Stop current timer (no delay) */
-		if(pdPASS != xTimerStop(LLMJVM_FREERTOS_wake_up_timer, (TickType_t )0)) {
-			LLMJVM_ERROR_TRACE("%s:%d xTimerStop error\n", __FUNCTION__,__LINE__);
+		if (pdPASS != xTimerStop(LLMJVM_FREERTOS_wake_up_timer, (TickType_t)0)) {
+			LLMJVM_ERROR_TRACE("%s:%d xTimerStop error\n", __FUNCTION__, __LINE__);
 		}
 
 		/* Notify the VM now */
 		result = LLMJVM_schedule();
 	} else if ((LLMJVM_FREERTOS_timer_expired == true)
-			|| (absoluteTime < LLMJVM_FREERTOS_next_wake_up_time)
-			|| (LLMJVM_FREERTOS_next_wake_up_time <= currentTime)) {
+	           || (absoluteTime < LLMJVM_FREERTOS_next_wake_up_time)
+	           || (LLMJVM_FREERTOS_next_wake_up_time <= currentTime)) {
 		/* We want to schedule a request in the future but before the existing request
-		   or the existing request is already done */
+		 * or the existing request is already done */
 
 		/* Save new alarm absolute time */
 		LLMJVM_FREERTOS_next_wake_up_time = absoluteTime;
 
 		/* Stop current timer (no delay) */
-		if(pdPASS != xTimerStop(LLMJVM_FREERTOS_wake_up_timer, (TickType_t )0)) {
-			LLMJVM_ERROR_TRACE("%s:%d xTimerStop error\n", __FUNCTION__,__LINE__);
+		if (pdPASS != xTimerStop(LLMJVM_FREERTOS_wake_up_timer, (TickType_t)0)) {
+			LLMJVM_ERROR_TRACE("%s:%d xTimerStop error\n", __FUNCTION__, __LINE__);
 		}
 
 		LLMJVM_FREERTOS_timer_expired = false;
 
 		/* Schedule the new alarm */
-		xTimerChangePeriodResult = xTimerChangePeriod(LLMJVM_FREERTOS_wake_up_timer, (TickType_t)relativeTick, (TickType_t)0);
-		xTimerStartResult = xTimerStart(LLMJVM_FREERTOS_wake_up_timer, (TickType_t )0);
+		xTimerChangePeriodResult = xTimerChangePeriod(LLMJVM_FREERTOS_wake_up_timer, (TickType_t)relativeTick,
+		                                              (TickType_t)0);
+		xTimerStartResult = xTimerStart(LLMJVM_FREERTOS_wake_up_timer, (TickType_t)0);
 
 		if ((xTimerChangePeriodResult != pdPASS) || (xTimerStartResult != pdPASS)) {
 			result = LLMJVM_ERROR;
@@ -184,11 +190,11 @@ int32_t LLMJVM_IMPL_scheduleRequest(int64_t absoluteTime) {
 int32_t LLMJVM_IMPL_idleVM(void) {
 	portBASE_TYPE res = xSemaphoreTake(LLMJVM_FREERTOS_Semaphore, portMAX_DELAY);
 
-	return (res == pdTRUE) ? (int32_t) LLMJVM_OK : (int32_t) LLMJVM_ERROR;
+	return (res == pdTRUE) ? (int32_t)LLMJVM_OK : (int32_t)LLMJVM_ERROR;
 }
 
-/* 
- * Wakes up the VM task 
+/*
+ * Wakes up the VM task
  */
 int32_t LLMJVM_IMPL_wakeupVM(void) {
 	portBASE_TYPE res;
@@ -204,7 +210,7 @@ int32_t LLMJVM_IMPL_wakeupVM(void) {
 		res = xSemaphoreGive(LLMJVM_FREERTOS_Semaphore);
 	}
 
-	return (res == pdTRUE) ? (int32_t) LLMJVM_OK : (int32_t) LLMJVM_ERROR;
+	return (res == pdTRUE) ? (int32_t)LLMJVM_OK : (int32_t)LLMJVM_ERROR;
 }
 
 /*
@@ -218,7 +224,7 @@ int32_t LLMJVM_IMPL_ackWakeup(void) {
  * Gets the system or the application time in milliseconds
  */
 int32_t LLMJVM_IMPL_getCurrentTaskID(void) {
-	return (int32_t) xTaskGetCurrentTaskHandle();
+	return (int32_t)xTaskGetCurrentTaskHandle();
 }
 
 /*
@@ -251,5 +257,5 @@ int32_t LLMJVM_IMPL_shutdown(void) {
 }
 
 #ifdef __cplusplus
-    }
+}
 #endif

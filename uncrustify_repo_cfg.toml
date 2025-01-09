@@ -1,0 +1,25 @@
+# 
+# Toml 
+#
+# Copyright 2024 MicroEJ Corp. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be found with this software.
+
+# Uncrustify Repository Configuration File
+
+# This file must contain a "source_path" key with the source path given relatively to this file folder.
+#
+# It can also contain a "exclusions" key with a list of exclusion patterns to filter out files that don't
+# have to be "uncrustified".
+# The element of this list can use Unix filename pattern matching expressions.
+# See: https://docs.python.org/fr/3/library/fnmatch.html
+#
+# Example of exclusion pattern, to exclude all files whose the file name has the pattern "LLFS_"
+# exclusions = [
+#     "*LLFS_*"
+# ]
+#
+
+source_path = "."
+
+exclusions = [
+]

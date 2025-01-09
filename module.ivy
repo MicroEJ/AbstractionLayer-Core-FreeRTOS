@@ -1,11 +1,11 @@
 <!--
 	Ivy
 	
-	Copyright 2020-2023 MicroEJ Corp. All rights reserved.
+	Copyright 2020-2025 MicroEJ Corp. All rights reserved.
 	Use of this source code is governed by a BSD-style license that can be found with this software.
 -->
 <ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
-    <info organisation="com.microej.clibrary.llimpl" module="mjvm-freertos" status="integration" revision="1.4.2">
+    <info organisation="com.microej.clibrary.llimpl" module="mjvm-freertos" status="integration" revision="1.4.4">
         <ea:build organisation="com.is2t.easyant.buildtypes" module="build-custom" revision="2.2.+">
 		</ea:build>
         <ea:plugin org="com.is2t.easyant.plugins" module="clean-artifacts" revision="+" />

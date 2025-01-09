@@ -13,11 +13,7 @@ See the MicroEJ documentation for a description of the `LLMJVM` functions:
 
 # Usage
 
-1. Install ``src`` and ``inc`` directories in your Board Support Package. They can be automatically downloaded using the following command lines:
-   ```sh
-    svn export --force https://github.com/MicroEJ/AbstractionLayer-Core-FreeRTOS/trunk/inc [path_to_bsp_directory]    
-    svn export --force https://github.com/MicroEJ/AbstractionLayer-Core-FreeRTOS/trunk/src [path_to_bsp_directory]
-   ```
+1. These sources can be included in the VEE Port with the method you prefer, by using this repository as a submodule or by doing a copy of the sources in the VEE Port repository.
 
 2. Implement the MicroEJ time functions, as described in [microej_time.h](./inc/microej_time.h).
 
@@ -75,6 +71,6 @@ None.
 
 ---
 
-_Copyright 2020-2023 MicroEJ Corp. All rights reserved._
+_Copyright 2020-2025 MicroEJ Corp. All rights reserved._
 _Use of this source code is governed by a BSD-style license that can be found with this software._
  
